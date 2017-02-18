@@ -2,30 +2,33 @@ package com.lahtinen.cloud.service.frontend.application;
 
 import com.lahtinen.cloud.service.frontend.domain.Post;
 import com.lahtinen.cloud.service.frontend.domain.PostId;
-import com.lahtinen.cloud.service.frontend.domain.PostRepository;
+import com.lahtinen.cloud.service.frontend.domain.PostReadRepository;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Optional;
 
 public class PostApplication {
 
-    private PostRepository postRepository;
+    private PostReadRepository postReadRepository;
 
-    public PostApplication(PostRepository postRepository) {
-        this.postRepository = postRepository;
+    public PostApplication(PostReadRepository postReadRepository) {
+        this.postReadRepository = postReadRepository;
     }
 
-    public List<Post> getPosts() {
-        return postRepository.getPosts();
+    public Collection<Post> getPosts() {
+        return postReadRepository.getPosts();
     }
 
     public Optional<Post> getPost(String id) {
-        return postRepository.getPost(PostId.parse(id));
+        return postReadRepository.getPost(PostId.parse(id));
     }
 
     public PostId createPost(String title, String body) {
-        final Post post = new Post(title, body);
-        postRepository.store(post);
-        return post.getId();
+        // TODO: Put event on SQS
+        return PostId.create();
+    }
+
+    public void deletePost(String id) {
+        // TODO: Put event on SQS
     }
 }

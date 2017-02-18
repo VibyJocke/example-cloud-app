@@ -14,3 +14,12 @@ Under heavy early development, nothing is yet running/tied together.
 
 ## How to build
 Simply run 'mvn install' from root.
+
+## Todo
+Implement
+- Hystrix
+- Health-checks
+- Pact tests
+- OpenID auth
+
+Add comments

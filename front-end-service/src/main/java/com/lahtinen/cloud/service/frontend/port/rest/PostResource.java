@@ -8,6 +8,7 @@ import com.lahtinen.cloud.service.frontend.port.rest.response.CreatePostResponse
 import com.lahtinen.cloud.service.frontend.port.rest.response.PostResponse;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -15,7 +16,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
+import java.util.Collection;
 import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
@@ -35,7 +36,7 @@ public class PostResource {
     @GET
     @Produces(VERSION_1_MIME_TYPE)
     public Response getPosts() {
-        final List<Post> posts = postApplication.getPosts();
+        final Collection<Post> posts = postApplication.getPosts();
         return Response.ok(posts.stream().map(PostResponse::new).collect(toList())).build();
     }
 
@@ -55,5 +56,12 @@ public class PostResource {
     public Response getPosts(CreatePostRequest request) {
         final PostId id = postApplication.createPost(request.getTitle(), request.getBody());
         return Response.ok(new CreatePostResponse(id)).build();
+    }
+
+    @DELETE
+    @Path("{id}")
+    public Response deletePost(@PathParam("id") String id) {
+        postApplication.deletePost(id);
+        return Response.ok().build();
     }
 }
