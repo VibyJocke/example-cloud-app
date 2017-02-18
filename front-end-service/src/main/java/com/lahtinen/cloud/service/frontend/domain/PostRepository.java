@@ -1,11 +1,12 @@
 package com.lahtinen.cloud.service.frontend.domain;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PostRepository {
     List<Post> getPosts();
 
-    Post getPost(PostId id);
+    Optional<Post> getPost(PostId id);
 
     void store(Post post);
 }

@@ -1,7 +1,7 @@
 package com.lahtinen.cloud.service.frontend.port.rest.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.lahtinen.cloud.service.frontend.domain.PostId;
+import com.lahtinen.cloud.service.frontend.domain.Post;
 
 public class PostResponse {
 
@@ -14,9 +14,9 @@ public class PostResponse {
     @JsonProperty
     private final String body;
 
-    public PostResponse(PostId id, String title, String body) {
-        this.id = id.toString();
-        this.title = title;
-        this.body = body;
+    public PostResponse(Post post) {
+        this.id = post.getId().toString();
+        this.title = post.getTitle();
+        this.body = post.getBody();
     }
 }

@@ -5,6 +5,7 @@ import com.lahtinen.cloud.service.frontend.domain.PostId;
 import com.lahtinen.cloud.service.frontend.domain.PostRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public class PostApplication {
 
@@ -18,7 +19,7 @@ public class PostApplication {
         return postRepository.getPosts();
     }
 
-    public Post getPost(String id) {
+    public Optional<Post> getPost(String id) {
         return postRepository.getPost(PostId.parse(id));
     }
 
