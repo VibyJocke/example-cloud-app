@@ -3,7 +3,7 @@ package com.lahtinen.cloud.service.frontend.port.rest.queue.event;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lahtinen.cloud.service.frontend.domain.PostId;
 
-public class PostCreatedEvent {
+public class PostCreatedEvent extends Event {
 
     private final PostId id;
     private final String title;

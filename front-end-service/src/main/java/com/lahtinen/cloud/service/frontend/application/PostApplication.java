@@ -1,5 +1,6 @@
 package com.lahtinen.cloud.service.frontend.application;
 
+import com.lahtinen.cloud.service.frontend.domain.EventPublisher;
 import com.lahtinen.cloud.service.frontend.domain.Post;
 import com.lahtinen.cloud.service.frontend.domain.PostId;
 import com.lahtinen.cloud.service.frontend.domain.PostReadRepository;
@@ -9,9 +10,11 @@ import java.util.Optional;
 
 public class PostApplication {
 
-    private PostReadRepository postReadRepository;
+    private final EventPublisher eventPublisher;
+    private final PostReadRepository postReadRepository;
 
-    public PostApplication(PostReadRepository postReadRepository) {
+    public PostApplication(EventPublisher eventPublisher, PostReadRepository postReadRepository) {
+        this.eventPublisher = eventPublisher;
         this.postReadRepository = postReadRepository;
     }
 

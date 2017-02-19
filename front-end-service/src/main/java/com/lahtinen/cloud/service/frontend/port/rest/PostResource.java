@@ -27,7 +27,7 @@ import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 public class PostResource {
 
     private static final String VERSION_1_MIME_TYPE = "application/json+v1";
-    private PostApplication postApplication;
+    private final PostApplication postApplication;
 
     public PostResource(PostApplication postApplication) {
         this.postApplication = postApplication;

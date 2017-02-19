@@ -1,0 +1,2 @@
+commandQueueName: commandQueue
+eventQueueName: eventQueue

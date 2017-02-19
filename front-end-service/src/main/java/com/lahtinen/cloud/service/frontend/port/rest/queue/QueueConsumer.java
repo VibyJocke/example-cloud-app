@@ -1,5 +1,7 @@
 package com.lahtinen.cloud.service.frontend.port.rest.queue;
 
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import com.amazonaws.services.sqs.model.Message;
@@ -30,7 +32,10 @@ public class QueueConsumer implements Runnable {
 
     public QueueConsumer(EventBus eventBus, String queueName) {
         this.eventBus = eventBus;
-        client = AmazonSQSClientBuilder.defaultClient();
+        client = AmazonSQSClientBuilder.standard()
+                .withCredentials(new ProfileCredentialsProvider())  //TODO: get provider from config file (use ContainerProfile in prod)
+                .withRegion(Regions.getCurrentRegion().getName())
+                .build();
         queueUrl = createQueue(queueName);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {

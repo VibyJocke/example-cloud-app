@@ -16,10 +16,14 @@ Under heavy early development, nothing is yet running/tied together.
 Simply run 'mvn install' from root.
 
 ## Todo
-Implement
+*Implement*
+- Write-side
+- Bootstrapping of read-side
+- A deprecated API (to illustrate the ACL)
 - Hystrix
 - Health-checks
 - Pact tests
 - OpenID auth
+- CloudFormation scripts
 
-Add comments
+*Add comments*
