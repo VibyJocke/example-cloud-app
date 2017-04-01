@@ -1,7 +1,8 @@
 # example-cloud-app
 
 ## Intro
-Java Dropwizard apps utilizing AWS cloud services, DDD, hexagonal architecture, event-sourcing and CQRS design principles.
+Java Dropwizard apps utilizing AWS cloud services, DDD, hexagonal architecture (aka Ports & Adapters), event-sourcing and CQRS design principles.
+The system will be horizontally scalable, fully redundant, deployed with zero downtime, eventually consistent and utilizing asynchronous communication.
 
 Together they make up a simple service to post and retrieve simple blog-style posts.
 
@@ -17,6 +18,8 @@ Simply run 'mvn install' from root.
 
 ## Todo
 *Implement*
+- Stubbed data
+- Front-end (statically served JS web application)
 - Write-side
 - Bootstrapping of read-side
 - A deprecated API (to illustrate the ACL)
