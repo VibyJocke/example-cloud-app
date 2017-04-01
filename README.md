@@ -19,7 +19,9 @@ Simply run 'mvn install' from root.
 ## Todo
 *Implement*
 - Stubbed data
+- Unit & service api tests
 - Front-end (statically served JS web application)
+- Some basic Javadocs
 - Write-side
 - Bootstrapping of read-side
 - A deprecated API (to illustrate the ACL)
@@ -28,5 +30,3 @@ Simply run 'mvn install' from root.
 - Pact tests
 - OpenID auth
 - CloudFormation scripts
-
-*Add comments*
