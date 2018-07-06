@@ -5,6 +5,8 @@ import com.lahtinen.cloud.service.frontend.domain.Post;
 import com.lahtinen.cloud.service.frontend.domain.PostId;
 import com.lahtinen.cloud.service.frontend.domain.PostReadRepository;
 import com.lahtinen.cloud.service.frontend.port.queue.event.PostCreatedEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Map;
@@ -12,6 +14,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class PostProjection implements PostReadRepository {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PostProjection.class);
 
     private final Map<PostId, Post> posts = new ConcurrentHashMap<>();
 
@@ -27,6 +30,7 @@ public class PostProjection implements PostReadRepository {
 
     @Subscribe
     public void event(PostCreatedEvent event) {
+        LOGGER.info("Got post with id {}", event.getId());
         posts.put(event.getId(), Post.parse(event.getId(), event.getTitle(), event.getBody()));
     }
 }

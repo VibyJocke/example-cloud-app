@@ -18,7 +18,6 @@ Simply run 'mvn package' from root.
 
 ## Todo
 *Implement*
-- Stubbed data
 - Unit & service api tests
 - Front-end (statically served JS web application, written in Vue?)
 - Write-side

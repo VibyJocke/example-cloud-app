@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class LocalPublisher implements CommandPublisher {
-    private static final Logger LOGGER = LoggerFactory.getLogger(QueueConsumer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LocalPublisher.class);
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 

@@ -37,7 +37,7 @@ public class FrondEndApp extends Application<FrontEndAppConfiguration> {
         environment.jersey().register(postResource);
 
         var eventBus = new EventBus();
-        var eventConsumer = isLocal ? new LocalConsumer() : new QueueConsumer(eventBus, config.getEventQueueName());
+        var eventConsumer = isLocal ? new LocalConsumer(eventBus) : new QueueConsumer(eventBus, config.getEventQueueName());
 
         eventBus.register(postReadRepository);
         environment.lifecycle().executorService("consumer").build().execute(eventConsumer);
