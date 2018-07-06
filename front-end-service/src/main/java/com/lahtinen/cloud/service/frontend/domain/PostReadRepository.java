@@ -7,4 +7,6 @@ public interface PostReadRepository {
     Collection<Post> getPosts();
 
     Optional<Post> getPost(PostId id);
+
+    Collection<Post> findPostByTitle(String titlePart);
 }

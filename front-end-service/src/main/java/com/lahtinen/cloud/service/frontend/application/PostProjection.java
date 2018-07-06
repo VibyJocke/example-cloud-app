@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static java.util.stream.Collectors.toList;
+
 public class PostProjection implements PostReadRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(PostProjection.class);
 
@@ -26,6 +28,13 @@ public class PostProjection implements PostReadRepository {
     @Override
     public Optional<Post> getPost(PostId id) {
         return Optional.ofNullable(posts.get(id));
+    }
+
+    @Override
+    public Collection<Post> findPostByTitle(String titlePart) {
+        return posts.values().stream()
+                .filter(post -> post.getTitle().contains(titlePart))
+                .collect(toList());
     }
 
     @Subscribe
