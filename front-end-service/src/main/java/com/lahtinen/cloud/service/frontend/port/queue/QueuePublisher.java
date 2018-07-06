@@ -25,9 +25,9 @@ public class QueuePublisher implements CommandPublisher {
     @Override
     public void publish(Command event) {
         try {
-            final HashMap<String, MessageAttributeValue> attributes = new HashMap<>();
+            var attributes = new HashMap<String, MessageAttributeValue>();
             attributes.put("type", new MessageAttributeValue().withStringValue(event.getClass().getSimpleName()));
-            final SendMessageRequest message = new SendMessageRequest()
+            var message = new SendMessageRequest()
                     .withQueueUrl(queueUrl)
                     .withMessageBody(MAPPER.writeValueAsString(event))
                     .withMessageAttributes(attributes);

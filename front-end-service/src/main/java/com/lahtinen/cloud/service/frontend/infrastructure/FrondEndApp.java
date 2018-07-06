@@ -3,8 +3,6 @@ package com.lahtinen.cloud.service.frontend.infrastructure;
 import com.google.common.eventbus.EventBus;
 import com.lahtinen.cloud.service.frontend.application.PostApplication;
 import com.lahtinen.cloud.service.frontend.application.PostProjection;
-import com.lahtinen.cloud.service.frontend.domain.CommandPublisher;
-import com.lahtinen.cloud.service.frontend.domain.PostReadRepository;
 import com.lahtinen.cloud.service.frontend.port.queue.LocalConsumer;
 import com.lahtinen.cloud.service.frontend.port.queue.LocalPublisher;
 import com.lahtinen.cloud.service.frontend.port.queue.QueueConsumer;
@@ -32,14 +30,14 @@ public class FrondEndApp extends Application<FrontEndAppConfiguration> {
 
     @Override
     public void run(FrontEndAppConfiguration config, Environment environment) {
-        boolean isLocal = config.isLocal();
-        CommandPublisher commandPublisher = isLocal ? new LocalPublisher() : new QueuePublisher(config.getCommandQueueName());
-        PostReadRepository postReadRepository = new PostProjection();
-        PostResource postResource = new PostResource(new PostApplication(commandPublisher, postReadRepository));
+        var isLocal = config.isLocal();
+        var commandPublisher = isLocal ? new LocalPublisher() : new QueuePublisher(config.getCommandQueueName());
+        var postReadRepository = new PostProjection();
+        var postResource = new PostResource(new PostApplication(commandPublisher, postReadRepository));
         environment.jersey().register(postResource);
 
-        EventBus eventBus = new EventBus();
-        Runnable eventConsumer = isLocal ? new LocalConsumer() : new QueueConsumer(eventBus, config.getEventQueueName());
+        var eventBus = new EventBus();
+        var eventConsumer = isLocal ? new LocalConsumer() : new QueueConsumer(eventBus, config.getEventQueueName());
 
         eventBus.register(postReadRepository);
         environment.lifecycle().executorService("consumer").build().execute(eventConsumer);

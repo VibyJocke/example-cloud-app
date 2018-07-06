@@ -9,8 +9,6 @@ import com.google.common.eventbus.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
-
 import static org.awaitility.Awaitility.await;
 import static org.awaitility.Duration.TEN_SECONDS;
 
@@ -44,15 +42,15 @@ public class QueueConsumer implements Runnable {
 
         while (!stopped) {
             try {
-                final ReceiveMessageRequest request = new ReceiveMessageRequest()
+                var request = new ReceiveMessageRequest()
                         .withQueueUrl(queueUrl)
                         .withMessageAttributeNames("type");
-                final List<Message> messages = client.receiveMessage(request).getMessages();
+                var messages = client.receiveMessage(request).getMessages();
 
                 for (Message msg : messages) {
-                    final String type = msg.getMessageAttributes().get("type").getStringValue();
-                    final Class clazz = Class.forName(FULLY_QUALIFIED_NAME + type);
-                    final String payload = msg.getBody();
+                    var type = msg.getMessageAttributes().get("type").getStringValue();
+                    var clazz = Class.forName(FULLY_QUALIFIED_NAME + type);
+                    var payload = msg.getBody();
                     eventBus.post(MAPPER.readValue(payload, clazz));
                 }
             } catch (Exception e) {
