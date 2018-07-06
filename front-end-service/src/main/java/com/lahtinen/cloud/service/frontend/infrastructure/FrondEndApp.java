@@ -3,16 +3,16 @@ package com.lahtinen.cloud.service.frontend.infrastructure;
 import com.google.common.eventbus.EventBus;
 import com.lahtinen.cloud.service.frontend.application.PostApplication;
 import com.lahtinen.cloud.service.frontend.application.PostProjection;
-import com.lahtinen.cloud.service.frontend.domain.EventPublisher;
+import com.lahtinen.cloud.service.frontend.domain.CommandPublisher;
 import com.lahtinen.cloud.service.frontend.domain.PostReadRepository;
+import com.lahtinen.cloud.service.frontend.port.queue.LocalConsumer;
+import com.lahtinen.cloud.service.frontend.port.queue.LocalPublisher;
+import com.lahtinen.cloud.service.frontend.port.queue.QueueConsumer;
+import com.lahtinen.cloud.service.frontend.port.queue.QueuePublisher;
 import com.lahtinen.cloud.service.frontend.port.rest.PostResource;
-import com.lahtinen.cloud.service.frontend.port.rest.queue.QueueConsumer;
-import com.lahtinen.cloud.service.frontend.port.rest.queue.QueuePublisher;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-
-import java.util.concurrent.Executors;
 
 public class FrondEndApp extends Application<FrontEndAppConfiguration> {
 
@@ -31,16 +31,17 @@ public class FrondEndApp extends Application<FrontEndAppConfiguration> {
     }
 
     @Override
-    public void run(FrontEndAppConfiguration configuration, Environment environment) {
-        final EventPublisher eventPublisher = new QueuePublisher(configuration.getCommandQueueName());
-        final PostReadRepository postReadRepository = new PostProjection();
-        final PostResource postResource = new PostResource(new PostApplication(eventPublisher, postReadRepository));
+    public void run(FrontEndAppConfiguration config, Environment environment) {
+        boolean isLocal = config.isLocal();
+        CommandPublisher commandPublisher = isLocal ? new LocalPublisher() : new QueuePublisher(config.getCommandQueueName());
+        PostReadRepository postReadRepository = new PostProjection();
+        PostResource postResource = new PostResource(new PostApplication(commandPublisher, postReadRepository));
         environment.jersey().register(postResource);
 
-        final EventBus eventBus = new EventBus();
-        final QueueConsumer eventConsumer = new QueueConsumer(eventBus, configuration.getEventQueueName());
+        EventBus eventBus = new EventBus();
+        Runnable eventConsumer = isLocal ? new LocalConsumer() : new QueueConsumer(eventBus, config.getEventQueueName());
 
         eventBus.register(postReadRepository);
-        Executors.newSingleThreadExecutor().execute(eventConsumer);
+        environment.lifecycle().executorService("consumer").build().execute(eventConsumer);
     }
 }

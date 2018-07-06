@@ -1,20 +1,21 @@
 package com.lahtinen.cloud.service.frontend.application;
 
-import com.lahtinen.cloud.service.frontend.domain.EventPublisher;
+import com.lahtinen.cloud.service.frontend.domain.CommandPublisher;
 import com.lahtinen.cloud.service.frontend.domain.Post;
 import com.lahtinen.cloud.service.frontend.domain.PostId;
 import com.lahtinen.cloud.service.frontend.domain.PostReadRepository;
+import com.lahtinen.cloud.service.frontend.port.queue.command.CreatePostCommand;
 
 import java.util.Collection;
 import java.util.Optional;
 
 public class PostApplication {
 
-    private final EventPublisher eventPublisher;
+    private final CommandPublisher commandPublisher;
     private final PostReadRepository postReadRepository;
 
-    public PostApplication(EventPublisher eventPublisher, PostReadRepository postReadRepository) {
-        this.eventPublisher = eventPublisher;
+    public PostApplication(CommandPublisher commandPublisher, PostReadRepository postReadRepository) {
+        this.commandPublisher = commandPublisher;
         this.postReadRepository = postReadRepository;
     }
 
@@ -27,7 +28,7 @@ public class PostApplication {
     }
 
     public PostId createPost(String title, String body) {
-        // TODO: Put event on SQS
+        commandPublisher.publish(new CreatePostCommand(title, body));
         return PostId.create();
     }
 

@@ -1,9 +1,9 @@
-package com.lahtinen.cloud.service.frontend.port.rest.queue.event;
+package com.lahtinen.cloud.service.frontend.port.queue.command;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public abstract class Event {
+public abstract class Command {
 
     @Override
     public String toString() {

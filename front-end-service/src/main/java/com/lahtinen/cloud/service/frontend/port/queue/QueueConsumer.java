@@ -1,11 +1,8 @@
-package com.lahtinen.cloud.service.frontend.port.rest.queue;
+package com.lahtinen.cloud.service.frontend.port.queue;
 
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
-import com.amazonaws.regions.Regions;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import com.amazonaws.services.sqs.model.Message;
-import com.amazonaws.services.sqs.model.QueueDoesNotExistException;
 import com.amazonaws.services.sqs.model.ReceiveMessageRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.eventbus.EventBus;
@@ -20,7 +17,7 @@ import static org.awaitility.Duration.TEN_SECONDS;
 public class QueueConsumer implements Runnable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QueueConsumer.class);
-    private static final String FULLY_QUALIFIED_NAME = "com.lahtinen.cloud.service.frontend.port.rest.queue.event.";
+    private static final String FULLY_QUALIFIED_NAME = "com.lahtinen.cloud.service.frontend.port.queue.event.";
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private final AmazonSQS client;
@@ -32,24 +29,13 @@ public class QueueConsumer implements Runnable {
 
     public QueueConsumer(EventBus eventBus, String queueName) {
         this.eventBus = eventBus;
-        client = AmazonSQSClientBuilder.standard()
-                .withCredentials(new ProfileCredentialsProvider())  //TODO: get provider from config file (use ContainerProfile in prod)
-                .withRegion(Regions.getCurrentRegion().getName())
-                .build();
-        queueUrl = createQueue(queueName);
+        client = AmazonSQSClientBuilder.defaultClient();
+        queueUrl = client.getQueueUrl(queueName).getQueueUrl();
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             stopped = true;
             await().atMost(TEN_SECONDS).until(() -> !running);
         }));
-    }
-
-    private String createQueue(String queueName) {
-        try {
-            return client.getQueueUrl(queueName).getQueueUrl();
-        } catch (QueueDoesNotExistException e) {
-            return client.createQueue(queueName).getQueueUrl();
-        }
     }
 
     @Override

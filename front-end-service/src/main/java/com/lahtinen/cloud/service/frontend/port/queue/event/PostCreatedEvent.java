@@ -1,4 +1,4 @@
-package com.lahtinen.cloud.service.frontend.port.rest.queue.event;
+package com.lahtinen.cloud.service.frontend.port.queue.event;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lahtinen.cloud.service.frontend.domain.PostId;

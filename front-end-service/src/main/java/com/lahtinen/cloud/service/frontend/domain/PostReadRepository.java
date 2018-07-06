@@ -7,7 +7,4 @@ public interface PostReadRepository {
     Collection<Post> getPosts();
 
     Optional<Post> getPost(PostId id);
-
-    // TODO: Remove this. Writes (Commands) go onto SQS.
-    void store(Post post);
 }

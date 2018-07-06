@@ -7,6 +7,7 @@ import com.lahtinen.cloud.service.frontend.port.rest.request.CreatePostRequest;
 import com.lahtinen.cloud.service.frontend.port.rest.response.CreatePostResponse;
 import com.lahtinen.cloud.service.frontend.port.rest.response.PostResponse;
 
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -53,7 +54,7 @@ public class PostResource {
 
     @POST
     @Produces(VERSION_1_MIME_TYPE)
-    public Response getPosts(CreatePostRequest request) {
+    public Response getPosts(@Valid CreatePostRequest request) {
         final PostId id = postApplication.createPost(request.getTitle(), request.getBody());
         return Response.ok(new CreatePostResponse(id)).build();
     }

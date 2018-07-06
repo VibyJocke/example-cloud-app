@@ -4,7 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import com.lahtinen.cloud.service.frontend.domain.Post;
 import com.lahtinen.cloud.service.frontend.domain.PostId;
 import com.lahtinen.cloud.service.frontend.domain.PostReadRepository;
-import com.lahtinen.cloud.service.frontend.port.rest.queue.event.PostCreatedEvent;
+import com.lahtinen.cloud.service.frontend.port.queue.event.PostCreatedEvent;
 
 import java.util.Collection;
 import java.util.Map;
@@ -23,11 +23,6 @@ public class PostProjection implements PostReadRepository {
     @Override
     public Optional<Post> getPost(PostId id) {
         return Optional.ofNullable(posts.get(id));
-    }
-
-    @Override
-    public void store(Post post) {
-
     }
 
     @Subscribe

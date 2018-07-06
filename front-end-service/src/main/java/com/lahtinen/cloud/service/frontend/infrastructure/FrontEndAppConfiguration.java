@@ -7,9 +7,10 @@ public class FrontEndAppConfiguration extends Configuration {
 
     @JsonProperty
     private String commandQueueName;
-
     @JsonProperty
     private String eventQueueName;
+    @JsonProperty
+    private boolean local;
 
     public String getCommandQueueName() {
         return commandQueueName;
@@ -17,5 +18,9 @@ public class FrontEndAppConfiguration extends Configuration {
 
     public String getEventQueueName() {
         return eventQueueName;
+    }
+
+    public boolean isLocal() {
+        return local;
     }
 }
