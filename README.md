@@ -7,25 +7,23 @@ The system will be horizontally scalable, fully redundant, deployed with zero do
 Together they make up a simple service to post and retrieve simple blog-style posts.
 
 ## Requirements
-- Java 8
-- Maven 3
+- Java 10
+- Maven 3.5.x
 
 ## Current state
 Under heavy early development, nothing is yet running/tied together.
 
 ## How to build
-Simply run 'mvn install' from root.
+Simply run 'mvn package' from root.
 
 ## Todo
 *Implement*
 - Stubbed data
 - Unit & service api tests
-- Front-end (statically served JS web application)
-- Some basic Javadocs
+- Front-end (statically served JS web application, written in Vue?)
 - Write-side
 - Bootstrapping of read-side
 - A deprecated API (to illustrate the ACL)
-- Hystrix
 - Health-checks
 - Pact tests
 - OpenID auth
