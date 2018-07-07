@@ -5,6 +5,7 @@ import com.lahtinen.cloud.service.frontend.domain.Post;
 import com.lahtinen.cloud.service.frontend.domain.PostId;
 import com.lahtinen.cloud.service.frontend.domain.PostReadRepository;
 import com.lahtinen.cloud.service.frontend.port.queue.command.CreatePostCommand;
+import com.lahtinen.cloud.service.frontend.port.queue.command.DeletePostCommand;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -33,6 +34,6 @@ public class PostApplication {
     }
 
     public void deletePost(String id) {
-        // TODO: Put event on SQS
+        commandPublisher.publish(new DeletePostCommand(id));
     }
 }

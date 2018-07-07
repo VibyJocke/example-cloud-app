@@ -23,7 +23,6 @@ Simply run 'mvn package' from root.
 - Write-side
 - Bootstrapping of read-side
 - A deprecated API (to illustrate the ACL)
-- Health-checks
 - Pact tests
 - OpenID auth
 - CloudFormation scripts

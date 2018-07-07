@@ -4,6 +4,8 @@ import com.lahtinen.cloud.service.frontend.application.PostApplication;
 import com.lahtinen.cloud.service.frontend.port.rest.request.CreatePostRequest;
 import com.lahtinen.cloud.service.frontend.port.rest.response.CreatePostResponse;
 import com.lahtinen.cloud.service.frontend.port.rest.response.PostResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -19,20 +21,20 @@ import javax.ws.rs.core.Response;
 import static java.util.stream.Collectors.toList;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 
-@Path("/post")
-@Consumes(MediaType.APPLICATION_JSON)
-public class PostResource {
+@Path("v1/post")
+public class PostResourceV1 {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PostResourceV1.class);
 
-    private static final String VERSION_1_MIME_TYPE = "application/json+v1";
     private final PostApplication postApplication;
 
-    public PostResource(PostApplication postApplication) {
+    public PostResourceV1(PostApplication postApplication) {
         this.postApplication = postApplication;
     }
 
     @GET
-    @Produces(VERSION_1_MIME_TYPE)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getPosts() {
+        LOGGER.info("Get posts");
         var response = postApplication.getPosts().stream()
                 .map(PostResponse::new)
                 .collect(toList());
@@ -41,8 +43,9 @@ public class PostResource {
 
     @GET
     @Path("{id}")
-    @Produces(VERSION_1_MIME_TYPE)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getPosts(@PathParam("id") String id) {
+        LOGGER.info("Get post {}", id);
         var post = postApplication.getPost(id);
         if (!post.isPresent()) {
             return Response.status(NOT_FOUND).build();
@@ -51,8 +54,9 @@ public class PostResource {
     }
 
     @POST
-    @Produces(VERSION_1_MIME_TYPE)
-    public Response getPosts(@Valid CreatePostRequest request) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createPost(@Valid CreatePostRequest request) {
+        LOGGER.info("Create post");
         var id = postApplication.createPost(request.getTitle(), request.getBody());
         return Response.ok(new CreatePostResponse(id)).build();
     }
@@ -60,7 +64,8 @@ public class PostResource {
     @DELETE
     @Path("{id}")
     public Response deletePost(@PathParam("id") String id) {
+        LOGGER.info("Delete post {}", id);
         postApplication.deletePost(id);
-        return Response.ok().build();
+        return Response.noContent().build();
     }
 }

@@ -11,7 +11,6 @@ import com.lahtinen.cloud.service.frontend.port.queue.command.Command;
 import java.util.HashMap;
 
 public class QueuePublisher implements CommandPublisher {
-
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private final AmazonSQS client;

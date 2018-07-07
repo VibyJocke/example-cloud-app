@@ -7,7 +7,7 @@ import com.lahtinen.cloud.service.frontend.port.queue.LocalConsumer;
 import com.lahtinen.cloud.service.frontend.port.queue.LocalPublisher;
 import com.lahtinen.cloud.service.frontend.port.queue.QueueConsumer;
 import com.lahtinen.cloud.service.frontend.port.queue.QueuePublisher;
-import com.lahtinen.cloud.service.frontend.port.rest.PostResource;
+import com.lahtinen.cloud.service.frontend.port.rest.PostResourceV1;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -33,7 +33,7 @@ public class FrondEndApp extends Application<FrontEndAppConfiguration> {
         var isLocal = config.isLocal();
         var commandPublisher = isLocal ? new LocalPublisher() : new QueuePublisher(config.getCommandQueueName());
         var postReadRepository = new PostProjection();
-        var postResource = new PostResource(new PostApplication(commandPublisher, postReadRepository));
+        var postResource = new PostResourceV1(new PostApplication(commandPublisher, postReadRepository));
         environment.jersey().register(postResource);
 
         var eventBus = new EventBus();
